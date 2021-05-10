@@ -7,19 +7,17 @@ package org.efire.net;
 public class App 
 {
     public static void main( String[] args ) throws InterruptedException {
-        System.out.println( "Hello World!" );
         var newThread = new Thread(() -> {
-            System.out.println("Running newThread - "+Thread.currentThread().getName());
-            System.out.println("Get newThread Priority: "+ Thread.currentThread().getPriority());
-
+            //Throw unchecked exception
+            throw new RuntimeException("Error occurred");
         });
-        newThread.setName("New Worker Thread");
-        newThread.setPriority(Thread.MAX_PRIORITY);
-
-        System.out.println("Before the new newThread start - We are in Thread - "+Thread.currentThread().getName());
+        newThread.setName("Misbehaving Thread");
+        newThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                System.out.println("A critical error happens in the thread!!");
+            }
+        });
         newThread.start();
-        System.out.println("After the new newThread start - We are in Thread - "+Thread.currentThread().getName());
-
-        Thread.sleep(15_000);
     }
 }
