@@ -7,6 +7,7 @@ public class ThreadInterruptSample {
     public static void main(String[] args) {
         var thread = new Thread(new LongComputationTask(
                 new BigInteger("20000000"), new BigInteger("1000000000")));
+        thread.setDaemon(true);
         thread.start();
         thread.interrupt();
     }
@@ -29,10 +30,6 @@ public class ThreadInterruptSample {
         private static BigInteger pow(BigInteger base, BigInteger power) {
             var result = BigInteger.ONE;
             for (BigInteger i = BigInteger.ZERO ; i.compareTo(power) !=0 ; i = i.add(BigInteger.ONE)) {
-                if (Thread.interrupted()) {
-                    System.out.println("Prematurely computed");
-                    return BigInteger.ZERO;
-                }
                 result = result.multiply(base);
             }
             return result;
