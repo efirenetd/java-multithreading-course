@@ -8,7 +8,7 @@ public class ThreadInterruptSample {
         var thread = new Thread(new LongComputationTask(
                 new BigInteger("20000000"), new BigInteger("1000000000")));
         thread.start();
-        //thread.interrupt();
+        thread.interrupt();
     }
 
     static class LongComputationTask implements Runnable {
