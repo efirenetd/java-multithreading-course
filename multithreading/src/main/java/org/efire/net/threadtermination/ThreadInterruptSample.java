@@ -5,6 +5,7 @@ public class ThreadInterruptSample {
     public static void main(String[] args) {
         var thread = new Thread(new BlockingTask());
         thread.start();
+        thread.interrupt();
     }
 
     static class BlockingTask implements Runnable {
