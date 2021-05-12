@@ -1,4 +1,4 @@
-package org.efire.net.exercise1;
+package org.efire.net.exercises.one;
 
 public class Task2 implements Runnable {
     @Override
