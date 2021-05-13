@@ -13,8 +13,9 @@ import java.util.concurrent.Executors;
 
 public class ThroughputHttpServer {
 
-    public static final String INPUT_FILE = "word_book.txt";
-    public static final int NUM_OF_THREADS = 1;
+    //public static final String INPUT_FILE = "word_book.txt";
+    public static final String INPUT_FILE = "war_and_peace.txt";
+    public static final int NUM_OF_THREADS = 6;
 
     public static void main(String[] args) throws IOException {
         final var classLoader = ThroughputHttpServer.class.getClassLoader();
@@ -42,9 +43,7 @@ public class ThroughputHttpServer {
             //Sample HTTP Request - http://localhost:8000/search?word=who
             var keyValue = exchange.getRequestURI().getQuery().split("=");
             String action = keyValue[0];
-            System.out.println(action);
             String word = keyValue[1];
-            System.out.println(word);
             if (!action.equals("word")) {
                 System.out.println("return 400");
                 exchange.sendResponseHeaders(400, 0);
