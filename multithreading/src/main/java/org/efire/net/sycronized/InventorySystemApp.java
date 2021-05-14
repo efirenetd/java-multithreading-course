@@ -46,10 +46,10 @@ public class InventorySystemApp {
     static class InventoryCounter {
         private int items = 0;
 
-        private int increment() {
+        private synchronized int increment() {
             return items++;
         }
-        private int decrement() {
+        private synchronized int decrement() {
             return items--;
         }
 
