@@ -8,9 +8,9 @@ public class InventorySystemApp {
         final var decrementInventory = new DecrementInventory(inventoryCounter);
 
         incrementInventory.start();
-        incrementInventory.join();
-
         decrementInventory.start();
+
+        incrementInventory.join();
         decrementInventory.join();
 
         System.out.println("Inventory items count is: "+inventoryCounter.getItems());
