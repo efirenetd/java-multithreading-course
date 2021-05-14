@@ -6,15 +6,21 @@ public class MetricSegApp {
 
     //To verify the output of this sample, the expected Ave: is around 5ms
     // because in the BusinessLogic class, we set a Thread.sleep with random number bound to 10
-    // so the average will be around 5.
+    // so the average will be around 5 to 6 ms
     public static void main(String[] args) {
         var metrics = new Metrics();
         var businessLogic1 = new BusinessLogic(metrics);
         var businessLogic2 = new BusinessLogic(metrics);
+        var businessLogic3 = new BusinessLogic(metrics);
+        var businessLogic4 = new BusinessLogic(metrics);
+        var businessLogic5 = new BusinessLogic(metrics);
         var metricsPrinter = new MetricsPrinter(metrics);
 
         businessLogic1.start();
         businessLogic2.start();
+        businessLogic3.start();
+        businessLogic4.start();
+        businessLogic5.start();
         metricsPrinter.start();
     }
 
