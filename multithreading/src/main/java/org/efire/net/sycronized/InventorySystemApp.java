@@ -46,15 +46,27 @@ public class InventorySystemApp {
     static class InventoryCounter {
         private int items = 0;
 
-        private synchronized int increment() {
-            return items++;
+        Object lockingObject = new Object();
+
+        private void increment() {
+            //... more codes here
+            synchronized(lockingObject) {
+                items++;
+            }
+            //... more codes here
         }
-        private synchronized int decrement() {
-            return items--;
+        private void decrement() {
+            //... more codes here
+            synchronized(lockingObject) {
+                items--;
+            }
+            //... more codes here
         }
 
         public int getItems() {
-            return items;
+            synchronized (lockingObject) {
+                return items;
+            }
         }
     }
 }
