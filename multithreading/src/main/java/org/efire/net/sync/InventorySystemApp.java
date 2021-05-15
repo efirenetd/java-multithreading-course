@@ -1,4 +1,4 @@
-package org.efire.net.sycronized;
+package org.efire.net.sync;
 
 public class InventorySystemApp {
 

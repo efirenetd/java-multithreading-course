@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class MinMaxMetricsApp {
     public static void main(String[] args) {
-        var minMaxMetrics = new MinMaxMetrics();
-        var aThread = new AThread(minMaxMetrics);
+        MinMaxMetrics minMaxMetrics = new MinMaxMetrics();
+        AThread aThread = new AThread(minMaxMetrics);
         aThread.start();
     }
 
