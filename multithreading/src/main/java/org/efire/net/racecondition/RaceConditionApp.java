@@ -21,8 +21,8 @@ public class RaceConditionApp {
     }
 
     static class SharedClass {
-        private int x = 0;
-        private int y = 0;
+        private volatile int x = 0;
+        private volatile int y = 0;
 
         public void increment() {
             x++;
