@@ -76,9 +76,9 @@ public class IntersectionApp {
         }
 
         public void takeRoadB() {
-            synchronized (roadB) {
-                System.out.println("Road B is locked by :" + Thread.currentThread().getName());
-                synchronized (roadA) {
+            synchronized (roadA) {
+                System.out.println("Road A is locked by :" + Thread.currentThread().getName());
+                synchronized (roadB) {
                     System.out.println("Train is passing to road B");
                     try {
                         Thread.sleep(1);
