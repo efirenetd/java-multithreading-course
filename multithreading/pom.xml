@@ -14,13 +14,30 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <javafx.version>16</javafx.version>
+    <javafx.maven.plugin.version>0.0.6</javafx.maven.plugin.version>
   </properties>
 
   <dependencies>
     <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.8.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.16</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -71,6 +88,22 @@
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
+        </plugin>
+        <!-- JavaFX -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.6.0</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>java</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <mainClass>org.efire.net.reentrantlocks.CryptoDashboardApp</mainClass>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
