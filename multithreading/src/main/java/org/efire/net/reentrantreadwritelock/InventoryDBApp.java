@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class InventoryDBApp {
 
@@ -55,6 +57,7 @@ public class InventoryDBApp {
         for (Thread readerThread: readerThreads) {
             readerThread.join();
         }
+
         long endReadingTime = System.currentTimeMillis();
 
         System.out.println(String.format("Reading took %d ms", endReadingTime - startReadingTime));
@@ -62,18 +65,22 @@ public class InventoryDBApp {
     public static class InventoryDatabase {
         private TreeMap<Integer, Integer> priceToCount = new TreeMap<>();
         private ReentrantLock lockObject = new ReentrantLock();
+        private ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+        private Lock readerLock = reentrantReadWriteLock.readLock();
+        private Lock writerLock = reentrantReadWriteLock.writeLock();
 
         public int getNumberOfItemInPriceRange(int lowerbound, int upperbound) {
-            lockObject.lock();
+            //lockObject.lock();
+            readerLock.lock();
             try {
                 var fromKey = priceToCount.ceilingKey(lowerbound);
                 var toKey = priceToCount.floorKey(upperbound);
 
-                var rangeOfPrice = priceToCount.subMap(fromKey, true, toKey, true);
-
                 if (fromKey == 0 && toKey == 0) {
                     return 0;
                 }
+
+                var rangeOfPrice = priceToCount.subMap(fromKey, true, toKey, true);
 
                 int sum = 0;
                 for (int numberOfPrice : rangeOfPrice.values()
@@ -83,12 +90,14 @@ public class InventoryDBApp {
 
                 return sum;
             }finally {
-                lockObject.unlock();
+                //lockObject.unlock();
+                readerLock.unlock();
             }
         }
 
         public void addItem(int price) {
-            lockObject.lock();
+            //lockObject.lock();
+            writerLock.lock();
             try {
                 var numberOfItemsForPrice = priceToCount.get(price);
                 if (numberOfItemsForPrice == null) {
@@ -97,12 +106,14 @@ public class InventoryDBApp {
                     priceToCount.put(price, numberOfItemsForPrice + 1);
                 }
             } finally {
-                lockObject.unlock();
+                //lockObject.unlock();
+                writerLock.unlock();
             }
         }
 
         public void removeItem(int price) {
-            lockObject.lock();
+            //lockObject.lock();
+            writerLock.lock();
             try {
                 var numberOfItemsForPrice = priceToCount.get(price);
                 if (numberOfItemsForPrice == null || numberOfItemsForPrice == 1) {
@@ -111,7 +122,8 @@ public class InventoryDBApp {
                     priceToCount.put(price, numberOfItemsForPrice - 1);
                 }
             }finally {
-                lockObject.unlock();
+                //lockObject.unlock();
+                writerLock.unlock();
             }
         }
     }
