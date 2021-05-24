@@ -32,11 +32,11 @@ public class SimpleCountDownLatch {
      */
     public void countDown() {
         synchronized (this) {
-            if (count == 0) {
-                notifyAll();
-            }
             if (count > 0) {
                 count--;
+            }
+            if (count == 0) {
+                notifyAll();
             }
         }
 
