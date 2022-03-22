@@ -142,21 +142,30 @@ public class MatrixMultiplicationApp {
 
     }
 
-    // No Backpressure
+    // With Backpressure
     static class ThreadSafeQueue {
         private Queue<MatricesPair> queue = new LinkedList<>(); //not thread safe LinkedList
         private boolean isEmpty = true;
         private boolean isTerminate = false;
 
+        public static final int CAPACITY = 5;
+
         // Note: All 3 methods are synchronized which keep the operation to the Queue atomic.
         // Also, this allows us to use notify, wait
         public synchronized void add(MatricesPair matricesPair) {
+            while (queue.size() == CAPACITY) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                }
+            }
             queue.add(matricesPair);
             isEmpty = false;
             notify();
         }
 
         public synchronized MatricesPair remove() {
+            MatricesPair matricesPair = null;
             while (isEmpty && !isTerminate) {
                 try {
                     wait();
@@ -171,7 +180,11 @@ public class MatrixMultiplicationApp {
             }
             System.out.println("queue size: "+queue.size());
 
-            return queue.remove();
+            matricesPair = queue.remove();
+            if (queue.size() == CAPACITY - 1) {
+                notifyAll();
+            }
+            return matricesPair;
         }
 
         public synchronized void terminate() {
